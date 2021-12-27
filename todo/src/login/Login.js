@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 export function Login() {
+  console.log("login page")
   const history = useHistory()
   const [email,setEmail] = useState("")
   
