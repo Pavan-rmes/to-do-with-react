@@ -44,15 +44,17 @@ function Addtask() {
         }
       >
         <p className="text-gray-700 text-xl">
-          <PlusIcon />
+          <PlusIcon onClick={()=>setAddTask(true)} />
         </p>
         <input
+          autoFocus={addTask}
           onFocus={() => setAddTask(true)}
           onBlur={() => setAddTask(false)}
           class="bg-gray-100 appearance-none border-none rounded w-full py-3 px-3 text-gray-700 leading-tight focus:bg-white-100 focus:outline-none focus:shadow-outline"
           id="task"
           type="text"
           placeholder="Add task"
+          value={newTask}
           onChange={(event) => setNewTask(event.target.value)}
         />
       </div>
@@ -60,6 +62,7 @@ function Addtask() {
         onClick={() => {
           if (newTask.length > 5) {
             setTasks([...tasks, { task: newTask }]);
+            setNewTask("")
           }
           if (newTask.length < 5) {
             setErr("Must contain min of 5 char");

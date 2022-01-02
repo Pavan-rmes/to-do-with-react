@@ -51,7 +51,7 @@ function Sidenav(props) {
 
 function Todo() {
   return (
-    <div className="text-xl bg-blue-500 mx-2">
+    <div className="text-xl bg-blue-500 ">
       <p className="pl-4 py-2 text-white">To Do</p>
     </div>
   );
