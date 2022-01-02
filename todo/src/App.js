@@ -14,6 +14,8 @@ import {
 import { Myday } from "./myday/Myday";
 
 function App() {
+  const history = useHistory()
+  history.push("/login")
   return (
     <div className="App" exact>
       <Switch>
