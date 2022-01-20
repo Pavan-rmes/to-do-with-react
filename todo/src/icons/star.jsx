@@ -1,4 +1,5 @@
-export default function StarIcon() {
+export default function StarIcon(props) {
+  // console.log(...props)
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -6,6 +7,7 @@ export default function StarIcon() {
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
+        {...props}
       >
         <path
           strokeLinecap="round"

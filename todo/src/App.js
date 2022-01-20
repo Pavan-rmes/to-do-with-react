@@ -12,6 +12,8 @@ import {
   HomeIcon,
 } from "./icons/index";
 import { Myday } from "./myday/Myday";
+import {Important} from "./important/important"
+import {Tasks} from "./tasks/Tasks"
 
 function App() {
   const history = useHistory()
@@ -29,14 +31,15 @@ function App() {
           <AuthRoute path="/important" exact>
             <Important />
           </AuthRoute>
+          <AuthRoute path="/tasks" exact>
+            <Tasks />
+          </AuthRoute>
         </Sidenav>
       </Switch>
     </div>
   );
 }
-function Important() {
-  return <>Important</>;
-}
+
 function Sidenav(props) {
   return (
     <>

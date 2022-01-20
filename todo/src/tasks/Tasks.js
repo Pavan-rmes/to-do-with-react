@@ -4,7 +4,7 @@ import axios from "axios";
 import { Mydblocation,inComTasks } from "../util";
 import { StarIcon } from "../icons/index";
 
-export function Myday() {
+export function Tasks() {
   return (
     <div className="h-screen overflow-auto">
       <Title />
@@ -18,10 +18,7 @@ function Title() {
   const date = d.toDateString().split(" ");
   return (
     <div className="py-4 pl-6">
-      <div className="text-xl font-medium">My Day ...</div>
-      <div className="pt-2 text-m">
-        {date[0]} ,{date[1]} ,{date[2]}
-      </div>
+      <div className="text-xl font-medium">Tasks ...</div>
     </div>
   );
 }
@@ -93,11 +90,7 @@ function AllTasks(props) {
   // const mytasks = props.tasks.filter((task)=>!task.imp)
   return (
     <div className="mt-14">
-      {props.tasks.map((task, index) =>{
-        if(!task.imp){
-          return(<TasksComp task={task} index={index} />)
-        }
-      } )}
+      {props.tasks.map((task, index) =><TasksComp task={task} index={index} />)}
     </div>
   );
 }
@@ -125,8 +118,8 @@ function TasksComp({ task,index }) {
         onMouseEnter={()=>setImpDialog((impDialog)=>!impDialog)} 
         className="ralative ml-auto mr-10 cursor-pointer">
           <dialog 
-          style={{position:"absolute",marginTop:"-30px",padding:"0"}} 
-          className="mr-3 bg-gray-200" 
+          style={{position:"absolute",marginTop:"-30px",padding:"2px"}} 
+          className="mr-3 bg-gray-100" 
           open={impDialog}>{task.imp?"Remove importance":"make task as important"}</dialog>
           <StarIcon onClick={()=>setStartColor((startColor)=>!startColor)} fill={startColor?"gold":"none"} color={startColor?"gold":"none"} />
         </div>
