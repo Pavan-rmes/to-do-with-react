@@ -1,6 +1,4 @@
-function Mydblocation() {
-  return "http://localhost:9000";
-}
+const API = "http://localhost:9000"
 
 const inComTasks = [
   { task: "Lab view to be completed",imp:false },
@@ -12,4 +10,4 @@ const inComTasks = [
 ];
 
 
-export { Mydblocation,inComTasks };
+export { API,inComTasks };

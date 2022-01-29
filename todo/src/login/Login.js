@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import axios from "axios"
-import {Mydblocation} from "../util"
+import {API} from "../util"
 
 
 export function Login() {
@@ -11,13 +11,10 @@ export function Login() {
   const [errorMessg,setErrorMessg] = useState("")
   
   function loginButton(){
-    axios.post(`${Mydblocation}/login`,{
-        "email":email,
-        "password":password
-    },{withCredentials:true})
+    console.log("sign in clicked")
+    axios.post(`${API}/login`,{"email":email,"password":password})
     .then((loginResponse)=>{
-      console.log(loginResponse)
-      if(loginResponse.status === "success"){
+      if(loginResponse.data.message === "success"){
         localStorage.setItem("email",email)
         history.push("/myday")
       }
