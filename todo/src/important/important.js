@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { PlusIcon } from "../icons/index";
 import axios from "axios";
-import { Mydblocation,inComTasks } from "../util";
+import { API,inComTasks } from "../util";
 import { StarIcon } from "../icons/index";
 
 export function Important() {
@@ -28,11 +28,10 @@ function Addtask() {
   const [tasks, setTasks] = useState(inComTasks);
   const [err, setErr] = useState("");
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`http://localhost:9000/myday`, { withCredentials: true })
-  //     .then((res) => setTasks(res));
-  // }, []);
+  useEffect(() => {
+    axios.get(`${API}/tasks/myday`)
+    .then((res) => setTasks(res.data));
+  }, []);
 
   return (
     <div class="pl-6 pt-4">

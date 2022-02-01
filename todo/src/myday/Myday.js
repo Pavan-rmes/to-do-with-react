@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { PlusIcon } from "../icons/index";
 import axios from "axios";
-import { Mydblocation,inComTasks } from "../util";
+import { API,inComTasks } from "../util";
 import { StarIcon } from "../icons/index";
 
 export function Myday() {
@@ -30,14 +30,13 @@ function Title() {
 function Addtask() {
   const [addTask, setAddTask] = useState(false);
   const [newTask, setNewTask] = useState("");
-  const [tasks, setTasks] = useState(inComTasks);
+  const [tasks, setTasks] = useState([]);
   const [err, setErr] = useState("");
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`http://localhost:9000/myday`, { withCredentials: true })
-  //     .then((res) => setTasks(res));
-  // }, []);
+  useEffect(() => {
+    axios.get(`${API}/tasks/myday`)
+    .then((res) => setTasks(res.data));
+  }, []);
 
   return (
     <div class="pl-6 pt-4">
@@ -68,6 +67,7 @@ function Addtask() {
           if (newTask.length > 5) {
             setTasks([...tasks, { task: newTask }]);
             setNewTask("");
+            setErr("")
           }
           if (newTask.length < 5) {
             setErr("Must contain min of 5 char");
@@ -92,7 +92,7 @@ function Addtask() {
 function AllTasks(props) {
   // const mytasks = props.tasks.filter((task)=>!task.imp)
   return (
-    <div className="mt-14">
+    <div className="mt-20">
       {props.tasks.map((task, index) =>{
         if(!task.imp){
           return(<TasksComp task={task} index={index} />)
