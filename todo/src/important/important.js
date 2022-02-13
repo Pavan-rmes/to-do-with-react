@@ -25,11 +25,11 @@ function Title() {
 function Addtask() {
   const [addTask, setAddTask] = useState(false);
   const [newTask, setNewTask] = useState("");
-  const [tasks, setTasks] = useState(inComTasks);
+  const [tasks, setTasks] = useState([]);
   const [err, setErr] = useState("");
 
   useEffect(() => {
-    axios.get(`${API}/tasks/myday`)
+    axios.get(`${API}/tasks`)
     .then((res) => setTasks(res.data));
   }, []);
 
@@ -60,8 +60,11 @@ function Addtask() {
       <button
         onClick={() => {
           if (newTask.length > 5) {
-            setTasks([...tasks, { task: newTask }]);
+            axios.post(`${API}/tasks`,{
+              task:newTask,
+              imp:true})
             setNewTask("");
+            setErr("")
           }
           if (newTask.length < 5) {
             setErr("Must contain min of 5 char");

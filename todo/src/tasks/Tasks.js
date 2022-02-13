@@ -3,6 +3,7 @@ import { PlusIcon } from "../icons/index";
 import axios from "axios";
 import { Mydblocation,inComTasks } from "../util";
 import { StarIcon } from "../icons/index";
+import { API } from "../util";
 
 export function Tasks() {
   return (
@@ -27,14 +28,12 @@ function Title() {
 function Addtask() {
   const [addTask, setAddTask] = useState(false);
   const [newTask, setNewTask] = useState("");
-  const [tasks, setTasks] = useState(inComTasks);
+  const [tasks, setTasks] = useState([]);
   const [err, setErr] = useState("");
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`http://localhost:9000/myday`, { withCredentials: true })
-  //     .then((res) => setTasks(res));
-  // }, []);
+  useEffect(() => {
+    axios.get(`${API}/tasks`)
+    .then((res) => setTasks(res.data));
+  }, []);
 
   return (
     <div class="pl-6 pt-4">
@@ -63,8 +62,11 @@ function Addtask() {
       <button
         onClick={() => {
           if (newTask.length > 5) {
-            setTasks([...tasks, { task: newTask }]);
+            axios.post(`${API}/tasks`,{
+              task:newTask,
+              imp:false})
             setNewTask("");
+            setErr("")
           }
           if (newTask.length < 5) {
             setErr("Must contain min of 5 char");

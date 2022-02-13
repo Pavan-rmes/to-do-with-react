@@ -32,11 +32,12 @@ function Addtask() {
   const [newTask, setNewTask] = useState("");
   const [tasks, setTasks] = useState([]);
   const [err, setErr] = useState("");
+  const [newTaskAdded , setNewTaskAdded] = useState(false)
 
   useEffect(() => {
-    axios.get(`${API}/tasks/myday`)
+    axios.get(`${API}/tasks`)
     .then((res) => setTasks(res.data));
-  }, []);
+  }, [newTaskAdded]);
 
   return (
     <div class="pl-6 pt-4">
@@ -65,7 +66,16 @@ function Addtask() {
       <button
         onClick={() => {
           if (newTask.length > 5) {
-            setTasks([...tasks, { task: newTask }]);
+            // setTasks([...tasks, { task: newTask }]);
+            axios.post(`${API}/tasks`,{
+              task:newTask,
+              imp:false})
+            .then((resData)=>{
+              console.log(resData)
+              if(resData.acknowledged){
+                setNewTaskAdded(!newTaskAdded)
+              }
+            })
             setNewTask("");
             setErr("")
           }
