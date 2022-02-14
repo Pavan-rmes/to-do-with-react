@@ -16,8 +16,7 @@ import {Important} from "./important/important"
 import {Tasks} from "./tasks/Tasks"
 
 function App() {
-  const history = useHistory()
-  history.push("/login")
+  
   return (
     <div className="App" exact>
       <Switch>
