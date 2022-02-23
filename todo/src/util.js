@@ -1,5 +1,5 @@
-// const API = "http://localhost:9000"
-const API = "https://pavan-todo-sever.herokuapp.com"
+const API = "http://localhost:9000"
+// const API = "https://pavan-todo-sever.herokuapp.com"
 
 const inComTasks = [
   { task: "Lab view to be completed",imp:false },

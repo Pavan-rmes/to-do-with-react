@@ -59,10 +59,11 @@ function Addtask() {
       </div>
       <button
         onClick={() => {
+          const date = new Date()
           if (newTask.length > 5) {
             axios.post(`${API}/tasks`,{
               task:newTask,
-              imp:true})
+              imp:true,status:false,date:date.toLocaleString()})
             setNewTask("");
             setErr("")
           }
@@ -102,6 +103,10 @@ function AllTasks(props) {
 function TasksComp({ task,index }) {
   const [check, setCheck] = useState(false);
   const [startColor,setStartColor]= useState(task.imp)
+
+  const changeImp = ()=>{axios.post(`${API}/tasks/changeimp`,{
+    id:task._id,imp:!task.imp
+  })}
   return (
     <>
       <div className="flex mb-3 mt-3 items-center">
@@ -118,7 +123,7 @@ function TasksComp({ task,index }) {
         )}
         <div 
         className="ralative ml-auto mr-10 cursor-pointer">
-          <StarIcon onClick={()=>setStartColor((startColor)=>!startColor)} fill={startColor?"gold":"none"} color={startColor?"gold":"none"} />
+          <StarIcon onClick={()=>{setStartColor((startColor)=>!startColor);changeImp()}} fill={startColor?"gold":"none"} color={startColor?"gold":"none"} />
         </div>
       </div>
       <hr></hr>

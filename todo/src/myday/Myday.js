@@ -64,11 +64,12 @@ function Addtask() {
       </div>
       <button
         onClick={() => {
+          const date = new Date()
           if (newTask.length >= 5) {
             // setTasks([...tasks, { task: newTask }]);
             axios.post(`${API}/tasks`,{
               task:newTask,
-              imp:false})
+              imp:false,status:false,date:date.toLocaleString()})
             .then((resData)=>{
               if(resData.data.acknowledged){
                 setNewTaskAdded(!newTaskAdded)
@@ -98,6 +99,7 @@ function Addtask() {
 }
 
 function AllTasks(props) {
+  console.log(props.tasks)
   // const mytasks = props.tasks.filter((task)=>!task.imp)
   return (
     <div className="mt-20">
@@ -114,11 +116,17 @@ function TasksComp({ task,index }) {
   const [check, setCheck] = useState(false);
   const [impDialog,setImpDialog]= useState(false);
   const [startColor,setStartColor]= useState(task.imp)
+  const changeStatus = ()=>{axios.post(`${API}/tasks/changestatus`,{
+    id:task._id,status:!task.status
+  })}
+  const changeImp = ()=>{axios.post(`${API}/tasks/changeimp`,{
+    id:task._id,imp:!task.imp
+  })}
   return (
     <>
       <div className="flex mb-3 mt-3 items-center">
         <CheckedBtn
-          onChange={(event) => setCheck(event.target.checked)}
+          onChange={(event) => {setCheck(event.target.checked);changeStatus()}}
           name="task"
         />
         {check ? (
@@ -136,7 +144,7 @@ function TasksComp({ task,index }) {
           style={{position:"absolute",marginTop:"-30px",padding:"0"}} 
           className="mr-3 bg-gray-200" 
           open={impDialog}>{task.imp?"Remove importance":"make task as important"}</dialog>
-          <StarIcon onClick={()=>setStartColor((startColor)=>!startColor)} fill={startColor?"gold":"none"} color={startColor?"gold":"none"} />
+          <StarIcon onClick={()=>{setStartColor((startColor)=>!startColor);changeImp()}} fill={startColor?"gold":"none"} color={startColor?"gold":"none"} />
         </div>
       </div>
       <hr></hr>
