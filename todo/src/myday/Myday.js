@@ -104,7 +104,7 @@ function AllTasks(props) {
   return (
     <div className="mt-20">
       {props.tasks.map((task, index) =>{
-        if(!task.imp){
+        if(!task.imp && !task.status){
           return(<TasksComp task={task} index={index} />)
         }
       } )}

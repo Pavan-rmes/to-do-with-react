@@ -84,6 +84,7 @@ function Addtask() {
       <p className="ml-10 mt-4 text-red-500">{err}</p>
 
       <AllTasks tasks={tasks} />
+      <Completed tasks={tasks} />
     </div>
   );
 }
@@ -92,20 +93,31 @@ function AllTasks(props) {
   // const mytasks = props.tasks.filter((task)=>!task.imp)
   return (
     <div className="mt-14">
-      {props.tasks.map((task, index) =><TasksComp task={task} index={index} />)}
+      {props.tasks.map((task, index) =>{
+        if(!task.status){
+          return(<TasksComp task={task} index={index} />)
+        }
+      })}
     </div>
   );
 }
 
 function TasksComp({ task,index }) {
-  const [check, setCheck] = useState(false);
+  const [check, setCheck] = useState(task?.status);
   const [impDialog,setImpDialog]= useState(false);
   const [startColor,setStartColor]= useState(task.imp)
+
+  const changeStatus = ()=>{axios.post(`${API}/tasks/changestatus`,{
+    id:task._id,status:!task.status
+  })}
+  const changeImp = ()=>{axios.post(`${API}/tasks/changeimp`,{
+    id:task._id,imp:!task.imp
+  })}
   return (
     <>
       <div className="flex mb-3 mt-3 items-center">
         <CheckedBtn
-          onChange={(event) => setCheck(event.target.checked)}
+          onChange={(event) => {setCheck(event.target.checked);changeStatus()}}
           name="task"
         />
         {check ? (
@@ -123,7 +135,7 @@ function TasksComp({ task,index }) {
           style={{position:"absolute",marginTop:"-30px",padding:"2px"}} 
           className="mr-3 bg-gray-100" 
           open={impDialog}>{task.imp?"Remove importance":"make task as important"}</dialog>
-          <StarIcon onClick={()=>setStartColor((startColor)=>!startColor)} fill={startColor?"gold":"none"} color={startColor?"gold":"none"} />
+          <StarIcon onClick={()=>{setStartColor((startColor)=>!startColor);changeImp()}} fill={startColor?"gold":"none"} color={startColor?"gold":"none"} />
         </div>
       </div>
       <hr></hr>
@@ -131,6 +143,24 @@ function TasksComp({ task,index }) {
   );
 }
 
+function Completed({tasks}){
+  const [show,setShow] = useState(false)
+  return(
+    <div className="mt-4">
+      <div className="flex gap-x-2">
+        <div onClick={()=>setShow(!show)}>{show?<ChevronRight />:<ChevronDown />}</div>
+        <p>Completed</p>
+        <p className="text-gray-500">{tasks.length}</p>
+      </div>
+      <div className={`${!show?"block":"hidden"}`}>
+        {tasks.map((task, index) =>{
+          if(task.status){
+            return(<TasksComp task={task} index={index} />)
+          }})}
+      </div>
+    </div>
+  )
+}
 
 function CheckedBtn(props) {
   return (
@@ -143,4 +173,20 @@ function CheckedBtn(props) {
       />
     </div>
   );
+}
+
+function ChevronRight(){
+  return(
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+  )
+}
+
+function ChevronDown(){
+  return(
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+    </svg>
+  )
 }

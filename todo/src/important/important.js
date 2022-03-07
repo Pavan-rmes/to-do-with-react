@@ -92,7 +92,7 @@ function AllTasks(props) {
   return (
     <div className="mt-14">
       {props.tasks.map((task, index) =>{
-        if(task.imp){
+        if(task.imp && !task.status){
           return(<TasksComp task={task} index={index} />)
         }
       } )}
@@ -103,15 +103,20 @@ function AllTasks(props) {
 function TasksComp({ task,index }) {
   const [check, setCheck] = useState(false);
   const [startColor,setStartColor]= useState(task.imp)
+  
+  const changeStatus = ()=>{axios.post(`${API}/tasks/changestatus`,{
+    id:task._id,status:!task.status
+  })}
 
   const changeImp = ()=>{axios.post(`${API}/tasks/changeimp`,{
     id:task._id,imp:!task.imp
   })}
+
   return (
     <>
       <div className="flex mb-3 mt-3 items-center">
         <CheckedBtn
-          onChange={(event) => setCheck(event.target.checked)}
+          onChange={(event) => {setCheck(event.target.checked);changeStatus()}}
           name="task"
         />
         {check ? (
